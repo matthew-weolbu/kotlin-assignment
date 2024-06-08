@@ -43,17 +43,6 @@ class AuthController(
     return ResponseEntity.ok("User registered successfully")
   }
 
-  @PutMapping("/change-password")
-  fun changePassword(@RequestParam email: String, @RequestParam newPassword: String): ResponseEntity<*> {
-    val user = userRepository.findByEmail(email)
-    user?.let {
-      it.password = BCryptPasswordEncoder().encode(newPassword)
-      userRepository.save(it)
-      return ResponseEntity.ok("Password changed successfully")
-    }
-    return ResponseEntity.badRequest().body("User not found")
-  }
-
   @DeleteMapping("/delete")
   fun deleteUser(@RequestParam email: String): ResponseEntity<*> {
     val user = userRepository.findByEmail(email)
