@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class LectureService(private val lectureRepository: LectureRepository, private val userRepository: UserRepository) {
   fun findAllLectures(): List<LectureEntity> = lectureRepository.findAll()
 
-  fun findLectureById(id: Long): LectureEntity? = lectureRepository.findById(id).orElse(null)
+  fun findLectureById(id: Long): LectureEntity? = lectureRepository.findById(id).orElseThrow{ throw IllegalArgumentException("해당 강의가 존재하지 않습니다.")}
 
   fun createLecture(currentUser: UserDetails, lecture: LectureEntity): LectureEntity {
     val user = userRepository.findByEmail(currentUser.username)
