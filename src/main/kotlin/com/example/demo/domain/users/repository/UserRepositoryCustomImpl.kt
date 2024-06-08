@@ -1,6 +1,6 @@
 package com.example.demo.domain.users.repository
 
-import com.example.demo.config.QuerydslRepositorySupport
+import com.example.demo.global.config.QuerydslRepositorySupport
 import com.example.demo.domain.users.entity.QUserEntity
 import com.example.demo.domain.users.entity.UserEntity
 

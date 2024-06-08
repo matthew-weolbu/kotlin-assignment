@@ -1,4 +1,4 @@
-package com.example.demo.config
+package com.example.demo.global.config
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext

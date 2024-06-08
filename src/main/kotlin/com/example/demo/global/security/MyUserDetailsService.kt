@@ -1,4 +1,4 @@
-package com.example.demo.security
+package com.example.demo.global.security
 
 import com.example.demo.domain.users.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +18,6 @@ class MyUserDetailsService : UserDetailsService {
     val user = userRepository.findByEmail(email)
       ?: throw UsernameNotFoundException("User not found with email: $email")
 
-    return User(user.name, user.password, ArrayList())
+    return User(user.email, user.password, ArrayList())
   }
 }

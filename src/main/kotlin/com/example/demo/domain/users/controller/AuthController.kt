@@ -1,12 +1,12 @@
 package com.example.demo.domain.users.controller
 
-import com.example.demo.domain.users.entity.UserEntity
 import com.example.demo.domain.users.repository.UserRepository
 import com.example.demo.domain.users.requests.AuthenticationRequest
 import com.example.demo.domain.users.requests.UserCreateRequest
 import com.example.demo.domain.users.response.AuthenticationResponse
-import com.example.demo.security.JwtUtil
-import com.example.demo.security.MyUserDetailsService
+import com.example.demo.global.security.JwtUtil
+import com.example.demo.global.security.MyUserDetailsService
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
@@ -30,12 +30,13 @@ class AuthController(
       UsernamePasswordAuthenticationToken(authenticationRequest.email, authenticationRequest.password)
     )
     val userDetails: UserDetails = userDetailsService.loadUserByUsername(authenticationRequest.email)
+    print("userDetails.username: " + userDetails.username)
     val jwt = jwtUtil.generateToken(userDetails.username)
     return ResponseEntity.ok(AuthenticationResponse(jwt))
   }
 
   @PostMapping("/register")
-  fun register(@RequestBody request: UserCreateRequest): ResponseEntity<*> {
+  fun register(@Valid @RequestBody request: UserCreateRequest): ResponseEntity<*> {
     request.password = BCryptPasswordEncoder().encode(request.password)
     val userEntity = UserCreateRequest.toEntity(request)
     userRepository.save(userEntity)
@@ -43,8 +44,8 @@ class AuthController(
   }
 
   @PutMapping("/change-password")
-  fun changePassword(@RequestParam username: String, @RequestParam newPassword: String): ResponseEntity<*> {
-    val user = userRepository.findByEmail(username)
+  fun changePassword(@RequestParam email: String, @RequestParam newPassword: String): ResponseEntity<*> {
+    val user = userRepository.findByEmail(email)
     user?.let {
       it.password = BCryptPasswordEncoder().encode(newPassword)
       userRepository.save(it)
@@ -54,8 +55,8 @@ class AuthController(
   }
 
   @DeleteMapping("/delete")
-  fun deleteUser(@RequestParam username: String): ResponseEntity<*> {
-    val user = userRepository.findByEmail(username)
+  fun deleteUser(@RequestParam email: String): ResponseEntity<*> {
+    val user = userRepository.findByEmail(email)
     user?.let {
       userRepository.delete(it)
       return ResponseEntity.ok("User deleted successfully")

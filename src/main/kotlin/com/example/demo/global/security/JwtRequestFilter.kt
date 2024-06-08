@@ -1,4 +1,4 @@
-package com.example.demo.security
+package com.example.demo.global.security
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import kotlin.math.log
 
 @Slf4j
 @Component
@@ -28,16 +27,16 @@ class JwtRequestFilter(
 
   override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
     val authorizationHeader = request.getHeader(AUTHORIZATION_HEADER)
-    var username: String? = null
+    var email: String? = null
     var jwt: String? = null
 
     if (authorizationHeader != null && authorizationHeader.startsWith(AUTHORIZATION_PREFIX)) {
       jwt = authorizationHeader.substring(7)
-      username = jwtUtil.extractUsername(jwt)
+      email = jwtUtil.extractUsername(jwt)
     }
 
-    if (username != null && SecurityContextHolder.getContext().authentication == null) {
-      val userDetails = this.userDetailsService.loadUserByUsername(username)
+    if (email != null && SecurityContextHolder.getContext().authentication == null) {
+      val userDetails = this.userDetailsService.loadUserByUsername(email)
       if (jwtUtil.validateToken(jwt!!, userDetails.username)) {
         val authenticationToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
         authenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
