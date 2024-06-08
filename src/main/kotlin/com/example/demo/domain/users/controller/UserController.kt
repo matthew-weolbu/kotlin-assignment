@@ -1,18 +1,21 @@
-package com.example.demo.controller
+package com.example.demo.domain.users.controller
 
-import com.example.demo.entity.UserEntity
-import com.example.demo.response.UserResponse
+import com.example.demo.domain.users.entity.UserEntity
+import com.example.demo.domain.users.response.UserResponse
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.service.UserService
+import com.example.demo.domain.users.service.UserService
 
 @RestController
 @RequestMapping("/v1/users")
 class UserController(private val userService: UserService) {
 
   @GetMapping
-  fun getAllUsers(): List<UserEntity> = userService.findAllUsers()
+  fun getAllUsers(): List<UserResponse> {
+    val users = userService.findAllUsers()
+    return users.map { UserResponse.from(it) }
+  }
 
   @GetMapping("/{id}")
   fun getUserById(@PathVariable id: Long): ResponseEntity<UserResponse> {

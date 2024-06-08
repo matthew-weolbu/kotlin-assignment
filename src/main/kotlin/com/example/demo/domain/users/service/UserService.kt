@@ -1,8 +1,8 @@
-package com.example.demo.service
+package com.example.demo.domain.users.service
 
-import com.example.demo.entity.UserEntity
+import com.example.demo.domain.users.entity.UserEntity
 import org.springframework.stereotype.Service
-import com.example.demo.repository.UserRepository
+import com.example.demo.domain.users.repository.UserRepository
 
 @Service
 class UserService(private val userRepository: UserRepository) {
@@ -26,5 +26,5 @@ class UserService(private val userRepository: UserRepository) {
     userRepository.deleteById(id)
   }
 
-  fun findUsersByName(name: String): List<UserEntity> = userRepository.findByName(name)
+  fun findUsersByName(name: String): List<UserEntity> = userRepository.findUsersByName(name)
 }

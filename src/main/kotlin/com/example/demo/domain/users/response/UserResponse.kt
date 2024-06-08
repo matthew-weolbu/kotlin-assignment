@@ -1,6 +1,6 @@
-package com.example.demo.response
+package com.example.demo.domain.users.response
 
-import com.example.demo.entity.UserEntity
+import com.example.demo.domain.users.entity.UserEntity
 
 data class UserResponse(
   val id: Long = 0,

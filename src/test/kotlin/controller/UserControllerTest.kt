@@ -1,7 +1,7 @@
 package controller
 
 import com.example.demo.DemoApplication
-import com.example.demo.controller.UserController
+import com.example.demo.domain.users.controller.UserController
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
