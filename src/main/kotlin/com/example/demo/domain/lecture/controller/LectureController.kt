@@ -5,6 +5,8 @@ import com.example.demo.domain.lecture.response.LectureResponse
 import com.example.demo.domain.lecture.service.LectureService
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,8 +30,8 @@ class LectureController(private val lectureService: LectureService) {
   }
 
   @PostMapping
-  fun createLecture(@RequestBody lecture: LectureCreateRequest): ResponseEntity<LectureResponse> {
-    val newLecture = lectureService.createLecture(LectureCreateRequest.toEntity(lecture))
+  fun createLecture(@AuthenticationPrincipal userDetails: UserDetails, @RequestBody lecture: LectureCreateRequest): ResponseEntity<LectureResponse> {
+    val newLecture = lectureService.createLecture(userDetails, LectureCreateRequest.toEntity(lecture))
     return ResponseEntity(LectureResponse.from(newLecture), HttpStatus.CREATED)
   }
 

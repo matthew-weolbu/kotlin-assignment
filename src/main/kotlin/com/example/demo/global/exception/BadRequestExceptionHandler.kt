@@ -38,4 +38,9 @@ class BadRequestExceptionHandler {
     return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
   }
 
+  @ExceptionHandler(IllegalArgumentException::class)
+  fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<Map<String, String>> {
+    val errorResponse = mapOf("error" to ex.localizedMessage)
+    return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
+  }
 }

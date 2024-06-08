@@ -30,7 +30,6 @@ class AuthController(
       UsernamePasswordAuthenticationToken(authenticationRequest.email, authenticationRequest.password)
     )
     val userDetails: UserDetails = userDetailsService.loadUserByUsername(authenticationRequest.email)
-    print("userDetails.username: " + userDetails.username)
     val jwt = jwtUtil.generateToken(userDetails.username)
     return ResponseEntity.ok(AuthenticationResponse(jwt))
   }
