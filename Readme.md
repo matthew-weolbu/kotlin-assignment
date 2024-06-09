@@ -1,62 +1,77 @@
-# Weolbu Assignment
+# 월부 과제
 
-## Environment Setup
+이 프로젝트는 Kotlin과 Java를 사용하여 개발된 Spring Boot 애플리케이션입니다. 사용자가 강의에 등록할 수 있는 플랫폼을 제공합니다. 애플리케이션은 등록 과정이 원자성을 유지하고 분산 락을 사용하여 동시성 문제를 처리합니다.
 
-1. **Install JDK**: This project requires Java Development Kit (JDK) version 8 or above. You can download it from the [official Oracle website](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) or install it using a package manager.
+## 순서
 
-2. **Install Gradle**: This project uses Gradle as a build tool. You can download it from the [official Gradle website](https://gradle.org/install/) or install it using a package manager.
+1. **Redis 서버 시작**: 먼저 로컬 머신에서 Redis 서버를 시작해야 합니다. Redis 서버가 시작되면 애플리케이션은 Redis를 사용하여 분산 락을 구현합니다.
+2. **애플리케이션 실행**: 다음 명령을 사용하여 애플리케이션을 실행할 수 있습니다:
+3. **API 호출**: 애플리케이션은 다음 엔드포인트를 제공합니다:
 
-3. **Clone the repository**: Clone the repository to your local machine using the following command:
+## 주요 기능
+
+1. **사용자 등록**: 사용자는 이름, 이메일, 전화번호, 비밀번호, 유형 등의 세부 정보를 제공하여 등록할 수 있습니다.
+
+2. **강의 등록**: 등록된 사용자는 강의에 등록할 수 있습니다. 애플리케이션은 현재 등록 수를 최대 허용 등록 수와 비교하여 강의가 초과 예약되지 않도록 합니다.
+
+3. **동시성 처리**: 애플리케이션은 분산 락을 사용하여 동시성 문제를 처리합니다. 이는 등록 과정이 원자적, 즉 단일 불가분의 작업으로 처리되도록 합니다.
+
+4. **분산 락**: 애플리케이션은 Java용 Redis 기반 인메모리 데이터 그리드인 Redisson을 사용하여 분산 락을 구현합니다. 이를 통해 애플리케이션은 분산 환경에서도 동시성 문제를 처리할 수 있습니다.
+
+## 사용된 기술
+
+- **언어**: Kotlin 1.9
+- **프레임워크**: Spring Boot 3.2.5
+- **빌드 도구**: Gradle
+- **데이터베이스**: H2
+- **인메모리 데이터 그리드**: Redisson
+
+## 로컬 Redis 설정 (MacOS)
+
+1. **Redis 설치**: 먼저 로컬 머신에 Redis를 설치해야 합니다. macOS를 사용하는 경우 Homebrew를 사용하여 Redis를 설치할 수 있습니다:
 
 ```bash
-git clone https://github.com/matthew-weolbu/project-name.git
+brew install redis
 ```
 
-4. **Build the project**: Navigate to the project directory and build the project using Gradle:
+다른 운영 체제의 경우 [공식 Redis 웹사이트](https://redis.io/download)에서 Redis를 다운로드하고 설치 지침을 따르세요.
+
+2. **Redis 서버 시작**: Redis가 설치되면 다음 명령을 사용하여 Redis 서버를 시작할 수 있습니다:
 
 ```bash
-cd project-name
-./gradlew build
+redis-server
 ```
 
-## Running the Application
+기본적으로 Redis는 6379 포트에서 실행됩니다.
 
-1. **Start the application**: You can start the application using Gradle:
+3. **Redis 설치 테스트**: 다음 명령을 사용하여 Redis 명령줄 인터페이스를 실행하여 Redis가 제대로 작동하는지 테스트할 수 있습니다:
 
 ```bash
-./gradlew bootRun
+redis-cli ping
 ```
 
-The application will start and by default can be accessed at http://localhost:8080.
+Redis가 제대로 작동하면 `PONG`이 반환됩니다.
 
-## API Documentation
+## 로컬 Redis 설정 (Windows)
 
-This project provides the following RESTful APIs:
+1. **Redis 설치**: 먼저 로컬 머신에 Redis를 설치해야 합니다. Windows를 사용하는 경우 다음 단계를 따르세요:
 
-1. **User Registration API**: This API is used to register a new user.
+   - [Redis Windows 공식 다운로드 페이지](https://github.com/microsoftarchive/redis/releases)에서 최신 버전의 Redis를 다운로드합니다.
+   - 다운로드한 zip 파일을 원하는 위치에 압축 해제합니다.
+   - 압축 해제한 디렉토리로 이동하여 `redis-server.exe` 파일을 실행합니다.
 
-    - Endpoint: `/api/v1/users`
-    - Method: `POST`
-    - Request Body:
-      ```json
-      {
-        "name": "John Doe",
-        "email": "john.doe@example.com",
-        "phoneNumber": "1234567890",
-        "password": "password",
-        "type": "STUDENT"
-      }
-      ```
-    - Response: Returns the registered user details.
+2. **Redis 서버 시작**: Redis가 설치되면 다음 명령을 사용하여 Redis 서버를 시작할 수 있습니다:
 
-2. **Lecture Registration API**: This API is used to register a user for a lecture.
+```bash
+redis-server.exe
+```
 
-    - Endpoint: `/api/v1/registrations`
-    - Method: `POST`
-    - Request Body:
-      ```json
-      {
-        "lectureId": 1
-      }
-      ```
-    - Response: Returns the registration details.
+기본적으로 Redis는 6379 포트에서 실행됩니다.
+
+3. **Redis 설치 테스트**: 다음 명령을 사용하여 Redis 명령줄 인터페이스를 실행하여 Redis가 제대로 작동하는지 테스트할 수 있습니다:
+
+```bash
+redis-cli.exe ping
+```
+
+Redis가 제대로 작동하면 `PONG`이 반환됩니다.
