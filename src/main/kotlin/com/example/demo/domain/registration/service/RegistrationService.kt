@@ -6,14 +6,17 @@ import com.example.demo.domain.registration.dto.RegistrationDTO
 import com.example.demo.domain.registration.entity.RegistrationEntity
 import com.example.demo.domain.registration.repository.RegistrationRepository
 import com.example.demo.domain.users.repository.UserRepository
+import com.example.demo.global.annotation.DistributedLock
 import jakarta.transaction.Transactional
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 
 @Service
-class RegistrationService(private val registrationRepository: RegistrationRepository, private val userRepository: UserRepository,
-                          private val lectureRepository: LectureRepository
+class RegistrationService(
+  private val registrationRepository: RegistrationRepository, private val userRepository: UserRepository,
+  private val lectureRepository: LectureRepository,
 ) {
+  @DistributedLock(lockKey = "createRegistration")
   @Transactional
   fun createRegistration(currentUser: UserDetails, request: RegistrationCreateRequest): RegistrationEntity {
     val isLectureExists = lectureRepository.existsById(request.lectureId)
@@ -22,7 +25,8 @@ class RegistrationService(private val registrationRepository: RegistrationReposi
       throw IllegalArgumentException("강의가 존재하지 않습니다.")
     }
 
-    val lecture = lectureRepository.findById(request.lectureId).orElseThrow { IllegalArgumentException("강의가 존재하지 않습니다.") }
+    val lecture =
+      lectureRepository.findById(request.lectureId).orElseThrow { IllegalArgumentException("강의가 존재하지 않습니다.") }
     val currentRegistrations = registrationRepository.countByLectureId(request.lectureId)
 
     if (currentRegistrations >= lecture.maxStudents) {

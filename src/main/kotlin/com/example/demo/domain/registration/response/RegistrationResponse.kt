@@ -10,6 +10,6 @@ data class RegistrationResponse(
   var createdAt: LocalDateTime,
 ) {
   companion object {
-    fun from(entity: RegistrationEntity) = RegistrationResponse(entity.id, entity.userId, entity.lectureId, entity.createdAt)
+    fun from(entity: RegistrationEntity) = RegistrationResponse(entity.id, entity.lectureId, entity.userId, entity.createdAt)
   }
 }

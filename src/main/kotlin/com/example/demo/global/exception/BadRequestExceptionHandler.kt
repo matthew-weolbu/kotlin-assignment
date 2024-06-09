@@ -34,7 +34,7 @@ class BadRequestExceptionHandler {
 
   @ExceptionHandler(DataIntegrityViolationException::class)
   fun handleDataIntegrityViolationException(ex: DataIntegrityViolationException): ResponseEntity<Map<String, String>> {
-    val errorResponse = mapOf("error" to "이메일이 이미 존재합니다.")
+    val errorResponse = mapOf("error" to ex.localizedMessage)
     return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
   }
 
