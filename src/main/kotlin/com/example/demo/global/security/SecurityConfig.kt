@@ -35,8 +35,8 @@ class SecurityConfig(private val jwtRequestFilter: JwtRequestFilter) {
       }
       .authorizeHttpRequests { auth ->
         auth
-          .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
-          .requestMatchers(HttpMethod.POST, "/v1/auth/**").permitAll()
+          .requestMatchers(HttpMethod.GET,  "/favicon.ico", "/public/**", "/h2-console/**").permitAll()
+          .requestMatchers(HttpMethod.POST, "/v1/auth/**", "/h2-console/**").permitAll()
           .anyRequest().authenticated()
       }
       .exceptionHandling { exceptionHandling ->

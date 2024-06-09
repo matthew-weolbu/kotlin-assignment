@@ -8,6 +8,10 @@ spring:
     password:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   h2:
     console:
       enabled: true
@@ -29,3 +33,9 @@ logging:
         web: DEBUG
         filter:
           CommonsRequestLoggingFilter: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

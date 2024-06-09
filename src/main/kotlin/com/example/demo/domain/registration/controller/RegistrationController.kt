@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/registration")
+@RequestMapping("/v1/registrations")
 class RegistrationController(private val registrationService: RegistrationService) {
 
   @PostMapping
@@ -19,7 +19,13 @@ class RegistrationController(private val registrationService: RegistrationServic
     @RequestBody request: RegistrationCreateRequest
   ): ResponseEntity<RegistrationResponse> {
     val registration =
-      registrationService.createRegistation(userDetails, request)
+      registrationService.createRegistration(userDetails, request)
     return ResponseEntity(RegistrationResponse.from(registration), HttpStatus.CREATED)
+  }
+
+  @GetMapping
+  fun findRegistrations(): ResponseEntity<List<RegistrationResponse>> {
+    val registrations = registrationService.findRegistrations()
+    return ResponseEntity(registrations.map { RegistrationResponse.from(it) }, HttpStatus.OK)
   }
 }
