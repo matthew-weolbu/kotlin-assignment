@@ -7,7 +7,7 @@
 1. **Redis 서버 시작**: 먼저 로컬 머신에서 Redis 서버를 시작해야 합니다. Redis 서버가 시작되면 애플리케이션은 Redis를 사용하여 분산 락을 구현합니다.
 2. **애플리케이션 실행**: 다음 명령을 사용하여 애플리케이션을 실행할 수 있습니다:
 3. **API 호출**: Postman API 문서를 사용하여 이러한 API를 호출할 수 있습니다.
-   - Postman API 문서 : https://web.postman.co/workspace/My-Workspace~c219c974-e310-4b5b-8331-83bbbc6530b1/documentation/33005473-e56e528f-b71e-4eb3-b34e-82e890501866 
+   - Postman API 문서 : https://documenter.getpostman.com/view/33005473/2sA3XLEPmr
 
 ## 주요 기능
 
